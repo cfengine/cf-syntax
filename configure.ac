@@ -28,10 +28,14 @@ AM_INIT_AUTOMAKE([1.11 -Wall -Werror foreign subdir-objects])
 
 # AC_OUTPUT (configure) will generate Makefile from Makefile.in
 # performing substitutions according to AC_SUBST macros:
-AC_CONFIG_FILES([Makefile tests/unit/Makefile])
+AC_CONFIG_FILES([Makefile argv_printer/Makefile tests/unit/Makefile])
 
 # Declare that we need a C compiler:
 AC_PROG_CC
+
+# Declare that we need lex and yacc:
+AM_PROG_LEX
+AC_PROG_YACC
 
 # Use the m4 directory for m4 macros (convention):
 AC_CONFIG_MACRO_DIR([m4])

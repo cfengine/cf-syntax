@@ -19,6 +19,10 @@
 /ar-lib
 /argv_printer_libs
 /argv_printer_zero
+/argv_printer/argv_printer_libs
+/argv_printer/argv_printer_zero
+/argv_printer/Makefile
+/argv_printer/Makefile.in
 /build-aux/
 /compile
 /config.cache
