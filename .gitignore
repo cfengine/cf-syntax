@@ -17,12 +17,17 @@
 # Absolute paths:
 /autom4te.cache/
 /ar-lib
-/argv_printer_libs
-/argv_printer_zero
-/argv_printer/argv_printer_libs
-/argv_printer/argv_printer_zero
-/argv_printer/Makefile
-/argv_printer/Makefile.in
+/cf-syntax_libs
+/cf-syntax_zero
+/cf-syntax/cf-syntax_libs
+/cf-syntax/cf-syntax_zero
+/cf-syntax/Makefile
+/cf-syntax/Makefile.in
+/cf-syntax/cf-syntax
+/cf-syntax/cf_tokenizer.c
+/cf-syntax/cf_parser.c
+/cf-syntax/cf_parser.h
+/cf-syntax/lex.yy.c
 /build-aux/
 /compile
 /config.cache

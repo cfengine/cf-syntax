@@ -10,6 +10,6 @@ TESTS = \
 check_PROGRAMS = \
 	$(TESTS)
 
-test_argv_lib_SOURCES = test_argv_lib.c ../../argv_printer/argv_lib.c
+test_argv_lib_SOURCES = test_argv_lib.c ../../cf-syntax/argv_lib.c
 test_argv_lib_LDADD = libcmocka.la $(top_srcdir)/libntech/libutils/libutils.la
-test_argv_lib_CPPFLAGS = -I$(top_srcdir)/argv_printer
+test_argv_lib_CPPFLAGS = -I$(top_srcdir)/cf-syntax

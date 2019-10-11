@@ -1,6 +1,6 @@
 # package name, version, bug report email, tarball name, project home page:
-AC_INIT([argv_printer], [0.0.1], [ole@northern.tech],
-        [argv_printer], [https://northern.tech/])
+AC_INIT([cf-syntax], [0.0.1], [ole@northern.tech],
+        [cf-syntax], [https://northern.tech/])
 
 # Required autoconf version:
 AC_PREREQ([2.68])
@@ -28,7 +28,7 @@ AM_INIT_AUTOMAKE([1.11 -Wall -Werror foreign subdir-objects])
 
 # AC_OUTPUT (configure) will generate Makefile from Makefile.in
 # performing substitutions according to AC_SUBST macros:
-AC_CONFIG_FILES([Makefile argv_printer/Makefile tests/unit/Makefile])
+AC_CONFIG_FILES([Makefile cf-syntax/Makefile tests/unit/Makefile])
 
 # Declare that we need a C compiler:
 AC_PROG_CC

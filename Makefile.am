@@ -8,7 +8,7 @@
 # optimize for size and strip dead code.
 
 # Run make inside libutils as well:
-SUBDIRS = libntech argv_printer tests/unit
+SUBDIRS = libntech cf-syntax tests/unit
 
 # Look for macros inside m4 directory:
 ACLOCAL_AMFLAGS = -I m4 --install
