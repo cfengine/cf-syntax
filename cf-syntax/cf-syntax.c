@@ -2,7 +2,7 @@
 
 int main(int argc, const char *const *argv)
 {
-    if (ParseFile(stdin))
+    if (ParseFileStream(stdin))
     {
         return 0;
     }
