@@ -17,10 +17,6 @@
 # Absolute paths:
 /autom4te.cache/
 /ar-lib
-/cf-syntax_libs
-/cf-syntax_zero
-/cf-syntax/cf-syntax_libs
-/cf-syntax/cf-syntax_zero
 /cf-syntax/Makefile
 /cf-syntax/Makefile.in
 /cf-syntax/cf-syntax
@@ -51,5 +47,6 @@
 /test-driver
 /tests/unit/Makefile
 /tests/unit/Makefile.in
-/tests/unit/test_argv_lib
-/tests/unit/test_argv_lib.trs
+/tests/unit/test_parse_lib
+/tests/unit/test_parse_lib.trs
+/ylwrap
