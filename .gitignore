@@ -17,9 +17,9 @@
 # Absolute paths:
 /autom4te.cache/
 /ar-lib
-/cf-syntax/Makefile
-/cf-syntax/Makefile.in
-/cf-syntax/cf-syntax
+/cf-policy/Makefile
+/cf-policy/Makefile.in
+/cf-policy/cf-policy
 /build-aux/
 /compile
 /config.cache
