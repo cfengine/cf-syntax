@@ -28,7 +28,7 @@ AM_INIT_AUTOMAKE([1.11 -Wall -Werror foreign subdir-objects])
 
 # AC_OUTPUT (configure) will generate Makefile from Makefile.in
 # performing substitutions according to AC_SUBST macros:
-AC_CONFIG_FILES([Makefile cf-syntax/Makefile tests/unit/Makefile])
+AC_CONFIG_FILES([Makefile libpolicy/Makefile cf-syntax/Makefile tests/unit/Makefile])
 
 # Declare that we need a C compiler:
 AC_PROG_CC

@@ -10,11 +10,8 @@ TESTS = \
 check_PROGRAMS = \
 	$(TESTS)
 
-test_parse_lib_SOURCES = test_parse_lib.c \
-	../../cf-syntax/parse_lib.c \
-	../../cf-syntax/cf_tokenizer.l \
-	../../cf-syntax/cf_parser.y
-test_parse_lib_LDADD = libcmocka.la $(top_srcdir)/libntech/libutils/libutils.la
-test_parse_lib_CPPFLAGS = -I$(top_srcdir)/cf-syntax \
+test_parse_lib_SOURCES = test_parse_lib.c
+test_parse_lib_LDADD = libcmocka.la $(top_srcdir)/libpolicy/libpolicy.la
+test_parse_lib_CPPFLAGS = -I$(top_srcdir)/libpolicy \
 	-I$(top_srcdir)/libntech/libutils/ \
 	-I$(top_srcdir)/libntech/libcompat/

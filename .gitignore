@@ -20,10 +20,6 @@
 /cf-syntax/Makefile
 /cf-syntax/Makefile.in
 /cf-syntax/cf-syntax
-/cf-syntax/cf_tokenizer.c
-/cf-syntax/cf_parser.c
-/cf-syntax/cf_parser.h
-/cf-syntax/lex.yy.c
 /build-aux/
 /compile
 /config.cache
@@ -39,6 +35,12 @@
 /depcomp
 /install-sh
 /libtool
+/libpolicy/Makefile
+/libpolicy/Makefile.in
+/libpolicy/cf_tokenizer.c
+/libpolicy/cf_parser.c
+/libpolicy/cf_parser.h
+/libpolicy/lex.yy.c
 /ltmain.sh
 /Makefile
 /Makefile.in
