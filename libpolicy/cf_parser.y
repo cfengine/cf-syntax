@@ -25,6 +25,7 @@ extern char *yytext;
 %}
 
 %token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
+%token-table
 
 %%
 policy_file:
@@ -87,3 +88,8 @@ non_empty_list:
     value
     | non_empty_list COMMA value
     ;
+%%
+
+void print_token(int t) {
+  printf("%d - %-16s - '%s'\n", t, yytname[YYTRANSLATE(t)], yytext);
+}
