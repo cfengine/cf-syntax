@@ -108,6 +108,6 @@ non_empty_list:
     ;
 %%
 
-void print_token(int t) {
-  printf("%d - %-16s - '%s'\n", t, yytname[YYTRANSLATE(t)], yytext);
+void print_token(int t, const char *string) {
+  printf("%d - %-16s - '%s'\n", t, yytname[YYTRANSLATE(t)], string);
 }
