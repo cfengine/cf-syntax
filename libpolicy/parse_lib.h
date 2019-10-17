@@ -5,16 +5,16 @@ typedef struct PolicyFile {
     size_t bodies;
 } PolicyFile;
 
-typedef struct ParserState {
+typedef struct Parser {
     size_t errors;
     PolicyFile policy;
-} ParserState;
+} Parser;
 
 PolicyFile *ParseFileStream(FILE *input_file);
 bool LexFileStream(FILE *input_file);
 PolicyFile *ParseFile(const char *path);
 
-extern ParserState parser_state;
+extern Parser parser;
 
-ParserState *NewParser();
+Parser *NewParser();
 PolicyFile *CloseParser();

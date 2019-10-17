@@ -11,7 +11,7 @@ int yylex();
 void yyerror(const char *str)
 {
     fprintf(stderr,"%s: '%s'\n", str, yytext);
-    parser_state.errors += 1;
+    parser.errors += 1;
 }
 
 int yywrap()

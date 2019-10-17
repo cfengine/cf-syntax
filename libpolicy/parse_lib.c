@@ -10,7 +10,7 @@ void print_token(int t);
 extern FILE *yyin;
 extern char *yytext;
 
-ParserState parser_state;
+Parser parser;
 
 PolicyFile *ParseFileStream(FILE *const input_file)
 {
@@ -72,11 +72,11 @@ PolicyFile *ParseFile(const char *const path)
 
 PolicyFile *CloseParser()
 {
-    if (parser_state.errors != 0)
+    if (parser.errors != 0)
     {
         return NULL;
     }
     PolicyFile *policy = xmalloc(sizeof(PolicyFile));
-    memcpy(policy, &(parser_state.policy), sizeof(PolicyFile));
+    memcpy(policy, &(parser.policy), sizeof(PolicyFile));
     return policy;
 }
