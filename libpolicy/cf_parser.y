@@ -1,14 +1,18 @@
-%{
+%code top {
 #include <stdio.h>
 #include <string.h>
+}
 
-#include <parse_lib.h>
+%code requires {
+#include "parse_lib.h"
+}
 
+%code {
 extern char *yytext;
 
 int yylex();
 
-void yyerror(const char *str)
+void yyerror(Parser *parser, const char *str)
 {
     fprintf(stderr,"%s: '%s'\n", str, yytext);
     parser->errors += 1;
@@ -19,11 +23,11 @@ int yywrap()
     return 1;
 }
 
-
 extern char *yytext;
 
-%}
+}
 
+%param {Parser *parser}
 %token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
 %token-table
 

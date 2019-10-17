@@ -4,20 +4,18 @@
 #include <string.h> // memcpy
 #include <assert.h> // assert()
 
-int yyparse(void);
-int yylex(void);
+int yyparse(Parser *parser);
+int yylex(Parser *parser);
 void print_token(int t);
 
 extern FILE *yyin;
 extern char *yytext;
 
-Parser *parser;
-
 Parser *NewParser()
 {
-    Parser *p = xcalloc(1, sizeof(Parser));
-    p->policy = NewPolicyFile();
-    return p;
+    Parser *parser = xcalloc(1, sizeof(Parser));
+    parser->policy = NewPolicyFile();
+    return parser;
 }
 
 void DestroyParser(Parser *p)
@@ -29,16 +27,16 @@ void DestroyParser(Parser *p)
     }
 }
 
-PolicyFile *CloseParser(Parser *p)
+PolicyFile *CloseParser(Parser *parser)
 {
-    assert(p != NULL);
-    if (p->errors != 0)
+    assert(parser != NULL);
+    if (parser->errors != 0)
     {
-        DestroyParser(p);
+        DestroyParser(parser);
         return NULL;
     }
-    PolicyFile *policy = p->policy;
-    p->policy = NULL;
+    PolicyFile *policy = parser->policy;
+    parser->policy = NULL;
     return policy;
 }
 
@@ -54,7 +52,7 @@ void DestroyPolicyFile(PolicyFile *policy_file)
 
 PolicyFile *ParseFileStream(FILE *const input_file)
 {
-    parser = NewParser();
+    Parser *parser = NewParser();
     yyin = input_file;
     if (yyin == NULL)
     {
@@ -63,7 +61,7 @@ PolicyFile *ParseFileStream(FILE *const input_file)
 
     while (!feof(yyin))
     {
-        yyparse();
+        yyparse(parser);
 
         if (ferror(yyin))
         {
@@ -78,7 +76,7 @@ PolicyFile *ParseFileStream(FILE *const input_file)
 
 bool LexFileStream(FILE *const input_file)
 {
-    parser = NewParser();
+    Parser *parser = NewParser();
 
     yyin = input_file;
     if (yyin == NULL)
@@ -88,11 +86,11 @@ bool LexFileStream(FILE *const input_file)
 
     while (!feof(yyin))
     {
-        int ret = yylex();
+        int ret = yylex(parser);
         while (ret != 0)
         {
             print_token(ret);
-            ret = yylex();
+            ret = yylex(parser);
         }
 
         if (ferror(yyin))
