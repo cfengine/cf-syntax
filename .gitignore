@@ -37,6 +37,7 @@
 /libtool
 /libpolicy/Makefile
 /libpolicy/Makefile.in
+/libpolicy/cf_tokenizer.h
 /libpolicy/cf_tokenizer.c
 /libpolicy/cf_parser.c
 /libpolicy/cf_parser.h

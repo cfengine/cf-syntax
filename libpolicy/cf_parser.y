@@ -16,20 +16,23 @@
 
 /* Added to both .h and .c file (after top): */
 %code requires {
+
 #include "parse_lib.h"
+typedef void* yyscan_t;
+
+void print_token(int t, const char *string);
+
 }
 
 /* Added to .c file (after top and requires): */
 %code {
+int yylex(YYSTYPE* yylvalp, yyscan_t scanner);
+void yyerror(yyscan_t unused, const char* msg);
 
-extern char *yylval;
-
-int yylex(Parser *parser);
-
-void yyerror(Parser *parser, const char *str)
+void yyerror(yyscan_t unused, const char* msg)
 {
-    fprintf(stderr, "%s: '%s'\n", str, yylval);
-    parser->errors += 1;
+    // fprintf(stderr, "%s: '%s'\n", str, yylval);
+    // parser->errors += 1;
 }
 
 int yywrap()
@@ -39,8 +42,9 @@ int yywrap()
 
 }
 
+%define api.pure full
+%param { yyscan_t scanner }
 %define api.value.type {char *}
-%param {Parser *parser}
 %token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
 %token-table
 
@@ -107,6 +111,7 @@ non_empty_list:
     ;
 %%
 
-void print_token(int t, const char *string) {
+void print_token(int t, const char *string)
+{
   printf("%d - %-16s - '%s'\n", t, yytname[YYTRANSLATE(t)], string);
 }

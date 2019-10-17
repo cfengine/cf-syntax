@@ -4,12 +4,8 @@
 #include <string.h> // memcpy
 #include <assert.h> // assert()
 
-int yyparse(Parser *parser);
-int yylex(Parser *parser);
-void print_token(int t, const char *string);
-
-extern FILE *yyin;
-extern char *yylval;
+#include <cf_parser.h>
+#include <cf_tokenizer.h>
 
 Parser *NewParser()
 {
@@ -52,54 +48,66 @@ void DestroyPolicyFile(PolicyFile *policy_file)
 
 PolicyFile *ParseFileStream(FILE *const input_file)
 {
-    Parser *parser = NewParser();
-    yyin = input_file;
-    if (yyin == NULL)
+    if (input_file == NULL)
     {
         return NULL;
     }
 
-    while (!feof(yyin))
-    {
-        yyparse(parser);
+    Parser *parser = NewParser();
+    yyscan_t scanner;
+    yylex_init(&scanner);
+    yyset_in(input_file, scanner);
 
-        if (ferror(yyin))
+    while (!feof(input_file))
+    {
+        yyparse(scanner);
+
+        if (ferror(input_file))
         {
             return NULL;
         }
     }
+    yylex_destroy(scanner);
 
-    fclose(yyin);
+    fclose(input_file);
 
     return CloseParser(parser);
 }
 
 bool LexFileStream(FILE *const input_file)
 {
-    Parser *parser = NewParser();
-
-    yyin = input_file;
-    if (yyin == NULL)
+    if (input_file == NULL)
     {
         return NULL;
     }
 
-    while (!feof(yyin))
+    Parser *parser = NewParser();
+    yyscan_t scanner;
+    yylex_init(&scanner);
+    yyset_in(input_file, scanner);
+
+    char *token = NULL;
+    while (!feof(input_file))
     {
-        int ret = yylex(parser);
+        int ret = yylex(&token, scanner);
+
         while (ret != 0)
         {
-            print_token(ret, yylval);
-            ret = yylex(parser);
+            print_token(ret, token);
+            token = NULL;
+            ret = yylex(&token, scanner);
         }
+        token = NULL;
 
-        if (ferror(yyin))
+        if (ferror(input_file))
         {
             return NULL;
         }
     }
 
-    fclose(yyin);
+    yylex_destroy(scanner);
+
+    fclose(input_file);
 
     return CloseParser(parser);
 }
