@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <alloc.h>
 #include <string.h> // memcpy
+#include <assert.h> // assert()
 
 int yyparse(void);
 int yylex(void);
@@ -19,14 +20,25 @@ Parser *NewParser()
     return p;
 }
 
-PolicyFile *CloseParser()
+void DestroyParser(Parser *p)
 {
-    if (parser->errors != 0)
+    if (p != NULL)
     {
+        DestroyPolicyFile(p->policy);
+        free(p);
+    }
+}
+
+PolicyFile *CloseParser(Parser *p)
+{
+    assert(p != NULL);
+    if (p->errors != 0)
+    {
+        DestroyParser(p);
         return NULL;
     }
-    PolicyFile *policy = parser->policy;
-    parser->policy = NULL;
+    PolicyFile *policy = p->policy;
+    p->policy = NULL;
     return policy;
 }
 
@@ -61,7 +73,7 @@ PolicyFile *ParseFileStream(FILE *const input_file)
 
     fclose(yyin);
 
-    return CloseParser();
+    return CloseParser(parser);
 }
 
 bool LexFileStream(FILE *const input_file)
@@ -91,7 +103,7 @@ bool LexFileStream(FILE *const input_file)
 
     fclose(yyin);
 
-    return CloseParser();
+    return CloseParser(parser);
 }
 
 PolicyFile *ParseFile(const char *const path)

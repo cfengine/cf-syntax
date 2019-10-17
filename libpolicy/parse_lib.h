@@ -16,6 +16,7 @@ PolicyFile *ParseFile(const char *path);
 
 extern Parser *parser;
 Parser* NewParser();
-PolicyFile *CloseParser();
+void DestroyParser(Parser *p);
+PolicyFile *CloseParser(Parser *p);
 PolicyFile *NewPolicyFile();
 void DestroyPolicyFile(PolicyFile *policy_file);
