@@ -7,10 +7,12 @@
 #include <cf_parser.h>
 #include <cf_tokenizer.h>
 
-Parser *NewParser()
+Parser *NewParser(const char *filename)
 {
     Parser *parser = xcalloc(1, sizeof(Parser));
-    parser->policy = NewPolicyFile();
+    parser->policy = NewPolicyFile(filename);
+    parser->line_number = 1;
+    parser->column_number = 1;
     return parser;
 }
 
@@ -36,24 +38,34 @@ PolicyFile *CloseParser(Parser *parser)
     return policy;
 }
 
-PolicyFile *NewPolicyFile()
+PolicyFile *NewPolicyFile(const char *filename)
 {
-    return xcalloc(1, sizeof(PolicyFile));
+    PolicyFile *r = xcalloc(1, sizeof(PolicyFile));
+    r->name = xstrdup(filename);
+    return r;
 }
 
 void DestroyPolicyFile(PolicyFile *policy_file)
 {
-    free(policy_file);
+    if (policy_file != NULL)
+    {
+        free(policy_file->name);
+        free(policy_file);
+    }
 }
 
-PolicyFile *ParseFileStream(FILE *const input_file)
+PolicyFile *ParseFileStream(FILE *const input_file, const char *name)
 {
     if (input_file == NULL)
     {
         return NULL;
     }
+    if (name == NULL)
+    {
+        name = "(stdin)";
+    }
 
-    Parser *parser = NewParser();
+    Parser *parser = NewParser(name);
     yyscan_t scanner;
     yylex_init(&scanner);
     yyset_in(input_file, scanner);
@@ -74,14 +86,18 @@ PolicyFile *ParseFileStream(FILE *const input_file)
     return CloseParser(parser);
 }
 
-bool LexFileStream(FILE *const input_file)
+bool LexFileStream(FILE *const input_file, const char *name)
 {
     if (input_file == NULL)
     {
         return NULL;
     }
+    if (name == NULL)
+    {
+        name = "(stdin)";
+    }
 
-    Parser *parser = NewParser();
+    Parser *parser = NewParser(name);
     yyscan_t scanner;
     yylex_init(&scanner);
     yyset_in(input_file, scanner);
@@ -115,6 +131,6 @@ bool LexFileStream(FILE *const input_file)
 PolicyFile *ParseFile(const char *const path)
 {
     FILE *file = fopen(path, "r");
-    PolicyFile *policy = ParseFileStream(file);
+    PolicyFile *policy = ParseFileStream(file, path);
     return policy;
 }

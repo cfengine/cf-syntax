@@ -42,12 +42,12 @@ int main(int argc, const char *const *argv)
     {
         // Only print tokens, don't check syntax:
         // (Uses only the flex generated lexer, not the yacc parser grammar)
-        ret = LexFileStream(file_stream) ? 0 : 1;
+        ret = LexFileStream(file_stream, filename) ? 0 : 1;
     }
     else
     {
         // Parse file, check syntax according to yacc grammar:
-        if (ParseFileStream(file_stream))
+        if (ParseFileStream(file_stream, filename))
         {
             printf("Syntax check: OK\n");
         }

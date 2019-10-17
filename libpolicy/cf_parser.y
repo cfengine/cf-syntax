@@ -38,7 +38,22 @@ void yyerror(yyscan_t unused, Parser *parser, const char* msg);
 void yyerror(yyscan_t unused, Parser *parser, const char* msg)
 {
     parser->errors += 1;
-    fprintf(stderr, "%zu: %s\n", parser->newlines + 1, msg);
+    fprintf(stderr, "%s:%zu %s:\n", parser->policy->name, parser->line_number, msg);
+
+    if (parser->current_line != NULL)
+    {
+        fprintf(stderr, "%s\n", parser->current_line);
+        size_t spaces = parser->column_number - 2;
+        for (int i = 0; i < spaces; ++i)
+        {
+            fprintf(stderr, " ");
+        }
+
+        fprintf(stderr, "\033[0;31m");
+        fprintf(stderr, "^ Unexpected token: '%s'\n", parser->current_token);
+        fprintf(stderr, "\033[0m");
+
+    }
 }
 
 int yywrap()

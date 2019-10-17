@@ -6,22 +6,26 @@
 
 typedef struct PolicyFile {
     size_t bodies;
+    char *name;
 } PolicyFile;
 
 typedef struct Parser {
-    size_t newlines;
+    char *current_line;
+    const char *current_token;
+    size_t column_number;
+    size_t line_number;
     size_t errors;
     PolicyFile *policy;
 } Parser;
 
-PolicyFile *ParseFileStream(FILE *input_file);
-bool LexFileStream(FILE *input_file);
+PolicyFile *ParseFileStream(FILE *input_file, const char *name);
+bool LexFileStream(FILE *input_file, const char *name);
 PolicyFile *ParseFile(const char *path);
 
-Parser* NewParser();
+Parser* NewParser(const char *filename);
 void DestroyParser(Parser *p);
 PolicyFile *CloseParser(Parser *p);
-PolicyFile *NewPolicyFile();
+PolicyFile *NewPolicyFile(const char *filename);
 void DestroyPolicyFile(PolicyFile *policy_file);
 
 #endif
