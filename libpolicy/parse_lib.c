@@ -10,23 +10,23 @@ void print_token(int t);
 extern FILE *yyin;
 extern char *yytext;
 
-Parser parser;
+Parser *parser;
 
-Parser NewParser()
+Parser *NewParser()
 {
-    Parser p = { 0 };
-    p.policy = NewPolicyFile();
+    Parser *p = xcalloc(1, sizeof(Parser));
+    p->policy = NewPolicyFile();
     return p;
 }
 
 PolicyFile *CloseParser()
 {
-    if (parser.errors != 0)
+    if (parser->errors != 0)
     {
         return NULL;
     }
-    PolicyFile *policy = parser.policy;
-    parser.policy = NULL;
+    PolicyFile *policy = parser->policy;
+    parser->policy = NULL;
     return policy;
 }
 

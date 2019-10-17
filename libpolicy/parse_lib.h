@@ -14,8 +14,8 @@ PolicyFile *ParseFileStream(FILE *input_file);
 bool LexFileStream(FILE *input_file);
 PolicyFile *ParseFile(const char *path);
 
-extern Parser parser;
-Parser NewParser();
+extern Parser *parser;
+Parser* NewParser();
 PolicyFile *CloseParser();
 PolicyFile *NewPolicyFile();
 void DestroyPolicyFile(PolicyFile *policy_file);
