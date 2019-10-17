@@ -49,11 +49,11 @@ int main(int argc, const char *const *argv)
         // Parse file, check syntax according to yacc grammar:
         if (ParseFileStream(file_stream, filename))
         {
-            printf("Syntax check: OK\n");
+            printf("Syntax check: "GREEN"OK"RST"\n");
         }
         else
         {
-            printf("Syntax check: FAILED\n");
+            printf("Syntax check: "RED"FAILED"RST"\n");
             ret = 1;
         }
     }

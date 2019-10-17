@@ -37,8 +37,6 @@ void yyerror(yyscan_t unused, Parser *parser, const char* msg);
 
 void yyerror(yyscan_t unused, Parser *parser, const char* msg)
 {
-#define RED "\033[0;31m"
-#define RST "\033[0m"
     parser->errors += 1;
     fprintf(stderr, RED "\nSyntax error: " RST "%s:%zu\n", parser->policy->name, parser->line_number);
 

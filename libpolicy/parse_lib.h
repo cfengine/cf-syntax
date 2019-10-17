@@ -4,6 +4,10 @@
 #include <stdbool.h>  // bool
 #include <stdio.h>    // FILE
 
+#define RED "\033[1;31m"
+#define GREEN "\033[1;32m"
+#define RST "\033[0m"
+
 typedef struct PolicyFile {
     size_t bodies;
     char *name;
