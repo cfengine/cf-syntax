@@ -60,7 +60,7 @@ PolicyFile *ParseFileStream(FILE *const input_file)
 
     while (!feof(input_file))
     {
-        yyparse(scanner);
+        yyparse(scanner, parser);
 
         if (ferror(input_file))
         {
@@ -89,13 +89,13 @@ bool LexFileStream(FILE *const input_file)
     char *token = NULL;
     while (!feof(input_file))
     {
-        int ret = yylex(&token, scanner);
+        int ret = yylex(&token, scanner, parser);
 
         while (ret != 0)
         {
-            print_token(ret, token);
+            print_token(ret, token, parser);
             token = NULL;
-            ret = yylex(&token, scanner);
+            ret = yylex(&token, scanner, parser);
         }
         token = NULL;
 

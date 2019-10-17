@@ -9,6 +9,7 @@ typedef struct PolicyFile {
 } PolicyFile;
 
 typedef struct Parser {
+    size_t newlines;
     size_t errors;
     PolicyFile *policy;
 } Parser;

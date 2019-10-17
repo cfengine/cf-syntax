@@ -20,19 +20,25 @@
 #include "parse_lib.h"
 typedef void* yyscan_t;
 
-void print_token(int t, const char *string);
+void print_token(int t, const char *string, Parser *parser);
 
+}
+
+%code provides {
+#define YY_DECL \
+    int yylex(YYSTYPE* yylval_param, yyscan_t yyscanner, Parser *parser)
+YY_DECL;
+
+void yyerror(yyscan_t unused, Parser *parser, const char* msg);
 }
 
 /* Added to .c file (after top and requires): */
 %code {
-int yylex(YYSTYPE* yylvalp, yyscan_t scanner);
-void yyerror(yyscan_t unused, const char* msg);
 
-void yyerror(yyscan_t unused, const char* msg)
+void yyerror(yyscan_t unused, Parser *parser, const char* msg)
 {
-    // fprintf(stderr, "%s: '%s'\n", str, yylval);
-    // parser->errors += 1;
+    parser->errors += 1;
+    fprintf(stderr, "%zu: %s\n", parser->newlines + 1, msg);
 }
 
 int yywrap()
@@ -44,6 +50,7 @@ int yywrap()
 
 %define api.pure full
 %param { yyscan_t scanner }
+%param { Parser *parser }
 %define api.value.type {char *}
 %token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
 %token-table
@@ -111,7 +118,7 @@ non_empty_list:
     ;
 %%
 
-void print_token(int t, const char *string)
+void print_token(int t, const char *string, Parser *parser)
 {
   printf("%d - %-16s - '%s'\n", t, yytname[YYTRANSLATE(t)], string);
 }

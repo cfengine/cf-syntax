@@ -15,5 +15,6 @@
 body                    {*yylval = yytext; return BODY;}
 \"[^"]*\"               {*yylval = yytext; return QUOTED_STRING;}
 [a-zA-Z0-9_]+           {*yylval = yytext; return IDENTIFIER;}
-[ \t\n\r]+              {}; // No token returned!
+\n                      {parser->newlines += 1;}
+[ \t\r]                 {}; // No token returned!
 %%
