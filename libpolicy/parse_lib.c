@@ -9,7 +9,7 @@ int yylex(Parser *parser);
 void print_token(int t, const char *string);
 
 extern FILE *yyin;
-extern char *yytext;
+extern char *yylval;
 
 Parser *NewParser()
 {
@@ -89,7 +89,7 @@ bool LexFileStream(FILE *const input_file)
         int ret = yylex(parser);
         while (ret != 0)
         {
-            print_token(ret, yytext);
+            print_token(ret, yylval);
             ret = yylex(parser);
         }
 

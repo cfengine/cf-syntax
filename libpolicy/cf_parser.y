@@ -22,13 +22,13 @@
 /* Added to .c file (after top and requires): */
 %code {
 
-extern char *yytext;
+extern char *yylval;
 
 int yylex(Parser *parser);
 
 void yyerror(Parser *parser, const char *str)
 {
-    fprintf(stderr,"%s: '%s'\n", str, yytext);
+    fprintf(stderr, "%s: '%s'\n", str, yylval);
     parser->errors += 1;
 }
 
@@ -37,10 +37,9 @@ int yywrap()
     return 1;
 }
 
-extern char *yytext;
-
 }
 
+%define api.value.type {char *}
 %param {Parser *parser}
 %token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
 %token-table
