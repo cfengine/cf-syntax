@@ -8,6 +8,13 @@
    See cf_tokenizer.l for the rules which generate the lexer (tokenizer).
 */
 
+%define api.pure full
+%param { yyscan_t scanner }
+%param { Parser *parser }
+%define api.value.type {char *}
+%token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
+%token-table
+
 /* Added to the top of .c file: */
 %code top {
 #include <stdio.h>
@@ -24,6 +31,7 @@ void print_token(int t, const char *string, Parser *parser);
 
 }
 
+/* Added to both .h and .c file (after requires): */
 %code provides {
 #define YY_DECL \
     int yylex(YYSTYPE* yylval_param, yyscan_t yyscanner, Parser *parser)
@@ -61,13 +69,6 @@ int yywrap()
 }
 
 }
-
-%define api.pure full
-%param { yyscan_t scanner }
-%param { Parser *parser }
-%define api.value.type {char *}
-%token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
-%token-table
 
 %%
 policy_file:
