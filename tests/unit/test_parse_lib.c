@@ -21,6 +21,10 @@ static void parse_test_cf(void **data) {
         PolicyFile *policy = ParseFile("policy/02_body_curly.x.cf");
         assert_true(policy == NULL);
     }
+    {
+        PolicyFile *policy = ParseFile("policy/03_body_string.x.cf");
+        assert_true(policy == NULL);
+    }
 }
 
 int main(void) {
