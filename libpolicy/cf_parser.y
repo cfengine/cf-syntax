@@ -46,19 +46,28 @@ void yyerror(yyscan_t unused, Parser *parser, const char* msg);
 void yyerror(yyscan_t unused, Parser *parser, const char* msg)
 {
     parser->errors += 1;
-    fprintf(stderr, RED "\nSyntax error: " RST "%s:%zu\n", parser->policy->name, parser->line_number);
+    fprintf(stderr, RED "\nSyntax error " RST "in %s:%zu\n", parser->policy->name, parser->line_number);
 
     if (parser->current_line != NULL)
     {
         fprintf(stderr, "\n%s\n", parser->current_line);
-        size_t spaces = parser->column_number - 2;
+        size_t spaces = parser->column_number - 1;
+        size_t token_length = strlen(parser->current_token);
+        if (token_length > spaces)
+        {
+            spaces = 0;
+        }
+        else
+        {
+            spaces -= (token_length);
+        }
         for (int i = 0; i < spaces; ++i)
         {
             fprintf(stderr, " ");
         }
 
         fprintf(stderr, RED);
-        fprintf(stderr, "^ Unexpected token: '%s'\n\n", parser->current_token);
+        fprintf(stderr, "^ Unexpected token: %s\n\n", parser->current_token);
         fprintf(stderr, RST);
     }
 }
