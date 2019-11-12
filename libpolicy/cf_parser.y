@@ -72,7 +72,7 @@ int yywrap()
 
 %%
 policy_file:
-    /* empty */
+    %empty
     | body_list
     ;
 
@@ -95,7 +95,7 @@ body_body:
     ;
 
 body_inner_body:
-    /* empty */
+    %empty
     | body_attribute_list
     ;
 
@@ -124,7 +124,7 @@ list:
     ;
 
 inner_list:
-    /* empty */
+    %empty
     | non_empty_list;
 
 non_empty_list:
