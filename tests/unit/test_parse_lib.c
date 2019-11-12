@@ -8,21 +8,21 @@
 
 static void parse_test_cf(void **data) {
     {
-        PolicyFile *policy = ParseFile("policy/00_empty.cf");
+        PolicyFile *policy = ParseFile("../../examples/00_empty.cf");
         assert_true(policy != NULL);
         free(policy);
     }
     {
-        PolicyFile *policy = ParseFile("policy/01_body_empty.cf");
+        PolicyFile *policy = ParseFile("../../examples/01_body_empty.cf");
         assert_true(policy != NULL);
         free(policy);
     }
     {
-        PolicyFile *policy = ParseFile("policy/02_body_curly.x.cf");
+        PolicyFile *policy = ParseFile("../../examples/02_body_curly.x.cf");
         assert_true(policy == NULL);
     }
     {
-        PolicyFile *policy = ParseFile("policy/03_body_string.x.cf");
+        PolicyFile *policy = ParseFile("../../examples/03_body_string.x.cf");
         assert_true(policy == NULL);
     }
 }
