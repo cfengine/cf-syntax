@@ -69,6 +69,10 @@ esac
 
 AC_SUBST([STRIP_LDFLAGS]) # Substitutes the variable in Makefile.am
 
+# TODO - get rid of this:
+# Expose PCRE_LDFLAGS and friends:
+AC_CHECK_LIB(pcre, pcre_exec, [], [AC_MSG_ERROR(Cannot find PCRE)])
+
 # Run autoconf/configure in libntech, generating necessary makefiles:
 AC_CONFIG_SUBDIRS([libntech])
 

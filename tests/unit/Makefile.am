@@ -12,6 +12,7 @@ check_PROGRAMS = \
 
 test_parse_lib_SOURCES = test_parse_lib.c
 test_parse_lib_LDADD = libcmocka.la $(top_srcdir)/libpolicy/libpolicy.la
+test_parse_lib_LDFLAGS = $(PCRE_LDFLAGS)
 test_parse_lib_CPPFLAGS = -I$(top_srcdir)/libpolicy \
 	-I$(top_srcdir)/libntech/libutils/ \
 	-I$(top_srcdir)/libntech/libcompat/
