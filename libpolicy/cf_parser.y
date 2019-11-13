@@ -12,7 +12,7 @@
 %param { yyscan_t scanner }
 %param { Parser *parser }
 %define api.value.type {char *}
-%token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER
+%token SEMICOLON COMMA OPEN_CURLY CLOSE_CURLY FAT_ARROW BODY QUOTED_STRING IDENTIFIER UNKNOWN
 %token-table
 
 /* Added to the top of .c file: */

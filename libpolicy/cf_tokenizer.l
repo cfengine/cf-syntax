@@ -23,5 +23,6 @@ body                    {parser->column_number += yyleng; parser->current_token 
                             parser->current_line = xstrdup(yytext + 1);
                             yyless(1);
                         }
-[ \t\r]                 {parser->column_number += yyleng;}; // No token returned!
+[ \t\r]                 {parser->column_number += yyleng;} // No token returned!
+.                       {parser->column_number += yyleng; parser->current_token = *yylval = yytext; return UNKNOWN;}
 %%
