@@ -6,6 +6,7 @@
 
 #include <cf_parser.h>
 #include <cf_tokenizer.h>
+#include <body.h>
 
 Parser *NewParser(const char *filename)
 {
@@ -13,6 +14,7 @@ Parser *NewParser(const char *filename)
     parser->policy = NewPolicyFile(filename);
     parser->line_number = 1;
     parser->column_number = 1;
+    parser->stack = StackNew(10, BodyDestroy);
     return parser;
 }
 
@@ -42,6 +44,7 @@ PolicyFile *NewPolicyFile(const char *filename)
 {
     PolicyFile *r = xcalloc(1, sizeof(PolicyFile));
     r->name = xstrdup(filename);
+    r->bodies = SeqNew(10, BodyDestroy);
     return r;
 }
 
@@ -49,6 +52,7 @@ void DestroyPolicyFile(PolicyFile *policy_file)
 {
     if (policy_file != NULL)
     {
+        SeqDestroy(policy_file->bodies);
         free(policy_file->name);
         free(policy_file);
     }
@@ -133,4 +137,27 @@ PolicyFile *ParseFile(const char *const path)
     FILE *file = fopen(path, "r");
     PolicyFile *policy = ParseFileStream(file, path);
     return policy;
+}
+
+void ParserBeginBody(Parser *p)
+{
+    StackPush(p->stack, BodyNew());
+}
+
+void ParserSetBodyType(Parser *p, const char *type)
+{
+    Body *body = StackTop(p->stack);
+    body->type = xstrdup(type);
+}
+
+void ParserSetBodyName(Parser *p, const char *name)
+{
+    Body *body = StackTop(p->stack);
+    body->name = xstrdup(name);
+}
+
+void ParserEndBody(Parser *p)
+{
+    Body *body = StackPop(p->stack);
+    SeqAppend(p->policy->bodies, body);
 }

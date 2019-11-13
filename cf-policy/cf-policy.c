@@ -1,6 +1,7 @@
 #include <parse_lib.h>
 #include <string_lib.h> // StringMatchesOption()
 #include <file_lib.h>   // safe_fopen()
+#include <body.h>       // Body
 
 int main(int argc, const char *const *argv)
 {
@@ -46,16 +47,24 @@ int main(int argc, const char *const *argv)
     }
     else
     {
+        PolicyFile *policy = ParseFileStream(file_stream, filename);
         // Parse file, check syntax according to yacc grammar:
-        if (ParseFileStream(file_stream, filename))
+        if (policy != NULL)
         {
-            printf("Syntax check: "GREEN"OK"RST"\n");
+            printf("Syntax check: "GREEN"OK"RST"\n\n");
+            size_t length = SeqLength(policy->bodies);
+            for (int i = 0; i < length; ++i)
+            {
+                Body *body = SeqAt(policy->bodies, i);
+                printf("body %s %s {}\n", body->type, body->name);
+            }
         }
         else
         {
             printf("Syntax check: "RED"FAILED"RST"\n");
             ret = 1;
         }
+        DestroyPolicyFile(policy);
     }
     return ret;
 }

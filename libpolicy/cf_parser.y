@@ -92,8 +92,17 @@ body_list:
 
 body:
     BODY
+    {
+        ParserBeginBody(parser);
+    }
     IDENTIFIER
+    {
+        ParserSetBodyType(parser, yylval);
+    }
     IDENTIFIER
+    {
+        ParserSetBodyName(parser, yylval);
+    }
     body_body
     ;
 
@@ -101,6 +110,9 @@ body_body:
     OPEN_CURLY
     body_inner_body
     CLOSE_CURLY
+    {
+        ParserEndBody(parser);
+    }
     ;
 
 body_inner_body:
