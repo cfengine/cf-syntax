@@ -1,0 +1,19 @@
+body common control
+{
+    inputs => "one_string";
+}
+
+body files control
+{
+    inputs => {};
+}
+
+body my_type my_name
+{
+    inputs => {};
+}
+
+body some_type some_name
+{
+    inputs => {};
+}
