@@ -127,21 +127,39 @@ body_attribute_list:
 
 body_attribute:
     IDENTIFIER
+    {
+        ParserBeginAttribute(parser, yylval);
+    }
     FAT_ARROW
     value
     SEMICOLON
+    {
+        ParserEndAttribute(parser);
+    }
     ;
 
 value:
     IDENTIFIER
+    {
+        ParserAddString(parser, yylval);
+    }
     | QUOTED_STRING
+    {
+        ParserAddString(parser, yylval);
+    }
     | list
     ;
 
 list:
     OPEN_CURLY
+    {
+        ParserBeginList(parser);
+    }
     inner_list
     CLOSE_CURLY
+    {
+        ParserEndList(parser);
+    }
     ;
 
 inner_list:

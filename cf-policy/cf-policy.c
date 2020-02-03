@@ -51,17 +51,23 @@ int main(int argc, const char *const *argv)
         // Parse file, check syntax according to yacc grammar:
         if (policy != NULL)
         {
-            printf("Syntax check: "GREEN"OK"RST"\n\n");
+            printf("Syntax check: " GREEN "OK" RST "\n");
+
+            stdout = safe_fopen(filename, "w");
             size_t length = SeqLength(policy->bodies);
             for (int i = 0; i < length; ++i)
             {
                 Body *body = SeqAt(policy->bodies, i);
-                printf("body %s %s {}\n", body->type, body->name);
+                BodyPrint(body);
+                if (i != (length - 1))
+                {
+                    printf("\n");
+                }
             }
         }
         else
         {
-            printf("Syntax check: "RED"FAILED"RST"\n");
+            printf("Syntax check: " RED "FAILED" RST "\n");
             ret = 1;
         }
         DestroyPolicyFile(policy);

@@ -14,7 +14,7 @@ Parser *NewParser(const char *filename)
     parser->policy = NewPolicyFile(filename);
     parser->line_number = 1;
     parser->column_number = 1;
-    parser->stack = StackNew(10, BodyDestroy);
+    parser->stack = StackNew(10, ElementDestroy);
     return parser;
 }
 
@@ -141,23 +141,75 @@ PolicyFile *ParseFile(const char *const path)
 
 void ParserBeginBody(Parser *p)
 {
-    StackPush(p->stack, BodyNew());
+    StackPush(p->stack, ElementNewBody());
 }
 
 void ParserSetBodyType(Parser *p, const char *type)
 {
-    Body *body = StackTop(p->stack);
+    assert(p != NULL && type != NULL);
+
+    Element *element = StackTop(p->stack);
+    assert(element->type == TYPE_BODY);
+
+    Body *body = element->body;
+    assert(body->type == NULL);
+
     body->type = xstrdup(type);
 }
 
 void ParserSetBodyName(Parser *p, const char *name)
 {
-    Body *body = StackTop(p->stack);
+    assert(p != NULL && name != NULL);
+
+    Element *element = StackTop(p->stack);
+    assert(element->type == TYPE_BODY);
+
+    Body *body = element->body;
+    assert(body->name == NULL);
+
     body->name = xstrdup(name);
 }
 
 void ParserEndBody(Parser *p)
 {
-    Body *body = StackPop(p->stack);
+    assert(p != NULL);
+
+    Element *element = StackPop(p->stack);
+    assert(element != NULL);
+
+    Body *body = ElementToBody(element);
     SeqAppend(p->policy->bodies, body);
+}
+
+void ParserBeginAttribute(Parser *parser, const char *string)
+{
+    Element *e = ElementNewAttribute(string);
+    StackPush(parser->stack, e);
+}
+
+void ParserEndAttribute(Parser *parser)
+{
+    Element *attribute = StackPop(parser->stack);
+    Element *top = StackTop(parser->stack);
+    ElementAddChild(top, attribute);
+}
+
+void ParserAddString(Parser *parser, const char *string)
+{
+    Element *top = StackTop(parser->stack);
+    Element *child = ElementNewString(string);
+    ElementAddChild(top, child);
+}
+
+void ParserBeginList(Parser *parser)
+{
+    Element *top = ElementNewList();
+    StackPush(parser->stack, top);
+}
+
+void ParserEndList(Parser *parser)
+{
+    Element *list = StackPop(parser->stack);
+    Element *top = StackTop(parser->stack);
+    ElementAddChild(top, list);
 }

@@ -40,4 +40,12 @@ void ParserSetBodyType(Parser *p, const char *type);
 void ParserSetBodyName(Parser *p, const char *name);
 void ParserEndBody(Parser *p);
 
+void ParserBeginAttribute(Parser *parser, const char *string);
+void ParserEndAttribute(Parser *parser);
+
+void ParserAddString(Parser *parser, const char *string);
+
+void ParserBeginList(Parser *parser);
+void ParserEndList(Parser *parser);
+
 #endif
