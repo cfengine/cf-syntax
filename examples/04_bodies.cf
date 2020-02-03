@@ -1,19 +1,19 @@
 body common control
 {
-    inputs => "one_string";
+  inputs => "one_string";
 }
 
 body files control
 {
-    inputs => {};
+  inputs => { "a.cf", "b.cf", "c.cf" };
 }
 
 body my_type my_name
 {
-    inputs => {};
+  inputs => {};
 }
 
 body some_type some_name
 {
-    inputs => {};
+  inputs => {};
 }
