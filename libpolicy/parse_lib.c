@@ -6,7 +6,7 @@
 
 #include <cf_parser.h>
 #include <cf_tokenizer.h>
-#include <body.h>
+#include <policy.h>
 
 Parser *NewParser(const char *filename)
 {
@@ -14,7 +14,7 @@ Parser *NewParser(const char *filename)
     parser->policy = NewPolicyFile(filename);
     parser->line_number = 1;
     parser->column_number = 1;
-    parser->stack = StackNew(10, ElementDestroy);
+    parser->stack = StackNew(10, DestroyElement);
     return parser;
 }
 
@@ -44,7 +44,7 @@ PolicyFile *NewPolicyFile(const char *filename)
 {
     PolicyFile *r = xcalloc(1, sizeof(PolicyFile));
     r->name = xstrdup(filename);
-    r->bodies = SeqNew(10, BodyDestroy);
+    r->bodies = SeqNew(10, DestroyBody);
     return r;
 }
 
@@ -141,7 +141,7 @@ PolicyFile *ParseFile(const char *const path)
 
 void ParserBeginBody(Parser *p)
 {
-    StackPush(p->stack, ElementNewBody());
+    StackPush(p->stack, NewElementBody());
 }
 
 void ParserSetBodyType(Parser *p, const char *type)
@@ -183,7 +183,7 @@ void ParserEndBody(Parser *p)
 
 void ParserBeginAttribute(Parser *parser, const char *string)
 {
-    Element *e = ElementNewAttribute(string);
+    Element *e = NewElementAttribute(string);
     StackPush(parser->stack, e);
 }
 
@@ -191,19 +191,19 @@ void ParserEndAttribute(Parser *parser)
 {
     Element *attribute = StackPop(parser->stack);
     Element *top = StackTop(parser->stack);
-    ElementAddChild(top, attribute);
+    AppendElement(top, attribute);
 }
 
 void ParserAddString(Parser *parser, const char *string)
 {
     Element *top = StackTop(parser->stack);
-    Element *child = ElementNewString(string);
-    ElementAddChild(top, child);
+    Element *child = NewElementString(string);
+    AppendElement(top, child);
 }
 
 void ParserBeginList(Parser *parser)
 {
-    Element *top = ElementNewList();
+    Element *top = NewElementList();
     StackPush(parser->stack, top);
 }
 
@@ -211,5 +211,5 @@ void ParserEndList(Parser *parser)
 {
     Element *list = StackPop(parser->stack);
     Element *top = StackTop(parser->stack);
-    ElementAddChild(top, list);
+    AppendElement(top, list);
 }

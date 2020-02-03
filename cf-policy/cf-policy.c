@@ -1,7 +1,24 @@
 #include <parse_lib.h>
 #include <string_lib.h> // StringMatchesOption()
 #include <file_lib.h>   // safe_fopen()
-#include <body.h>       // Body
+#include <policy.h>       // Body
+
+static void RenderPolicy(PolicyFile *policy, const char *filename)
+{
+    assert(policy != NULL);
+
+    stdout = safe_fopen(filename, "w");
+    size_t length = SeqLength(policy->bodies);
+    for (int i = 0; i < length; ++i)
+    {
+        Body *body = SeqAt(policy->bodies, i);
+        PrintBody(body);
+        if (i != (length - 1))
+        {
+            printf("\n");
+        }
+    }
+}
 
 int main(int argc, const char *const *argv)
 {
@@ -53,17 +70,7 @@ int main(int argc, const char *const *argv)
         {
             printf("Syntax check: " GREEN "OK" RST "\n");
 
-            stdout = safe_fopen(filename, "w");
-            size_t length = SeqLength(policy->bodies);
-            for (int i = 0; i < length; ++i)
-            {
-                Body *body = SeqAt(policy->bodies, i);
-                BodyPrint(body);
-                if (i != (length - 1))
-                {
-                    printf("\n");
-                }
-            }
+            RenderPolicy(policy, filename);
         }
         else
         {

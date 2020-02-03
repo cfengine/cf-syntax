@@ -1,46 +1,46 @@
-#include <body.h>
+#include <policy.h>
 #include <alloc.h>
 #include <condition_macros.h>
 
-Attribute *AttributeNew(const char *name)
+Attribute *NewAttribute(const char *name)
 {
     Attribute *a = xcalloc(1, sizeof(Attribute));
     a->name = xstrdup(name);
     return a;
 }
 
-void AttributeSetValue(Attribute *attribute, Element *value)
+void SetAttributeValue(Attribute *attribute, Element *value)
 {
     assert(attribute != NULL && value != NULL);
     assert(attribute->value == NULL);
     attribute->value = value;
 }
 
-void AttributeDestroy(Attribute *attribute)
+void DestroyAttribute(Attribute *attribute)
 {
     if (attribute != NULL)
     {
-        ElementDestroy(attribute->value);
+        DestroyElement(attribute->value);
         free(attribute->name);
         free(attribute);
     }
 }
 
-Body *BodyNew()
+Body *NewBody()
 {
     Body *body = xcalloc(1, sizeof(Body));
-    body->attributes = SeqNew(8, ElementDestroy);
+    body->attributes = SeqNew(8, DestroyElement);
     return body;
 }
 
-void BodyAppendAttribute(Body *body, Element *element)
+void AppendBodyAttribute(Body *body, Element *element)
 {
     assert(body != NULL && element != NULL);
     assert(element->type == TYPE_ATTRIBUTE);
     SeqAppend(body->attributes, element);
 }
 
-void BodyDestroy(Body *body)
+void DestroyBody(Body *body)
 {
     if (body != NULL)
     {
@@ -51,15 +51,15 @@ void BodyDestroy(Body *body)
     }
 }
 
-Element *ElementNewBody()
+Element *NewElementBody()
 {
     Element *v = xcalloc(1, sizeof(Element));
     v->type = TYPE_BODY;
-    v->body = BodyNew();
+    v->body = NewBody();
     return v;
 }
 
-Element *ElementNewString(const char *string)
+Element *NewElementString(const char *string)
 {
     Element *v = xcalloc(1, sizeof(Element));
     v->type = TYPE_STRING;
@@ -67,23 +67,23 @@ Element *ElementNewString(const char *string)
     return v;
 }
 
-Element *ElementNewList()
+Element *NewElementList()
 {
     Element *e = xcalloc(1, sizeof(Element));
     e->type = TYPE_LIST;
-    e->list = SeqNew(8, ElementDestroy);
+    e->list = SeqNew(8, DestroyElement);
     return e;
 }
 
-Element *ElementNewAttribute(const char *name)
+Element *NewElementAttribute(const char *name)
 {
     Element *e = xcalloc(1, sizeof(Element));
     e->type = TYPE_ATTRIBUTE;
-    e->attribute = AttributeNew(name);
+    e->attribute = NewAttribute(name);
     return e;
 }
 
-void ElementDestroy(Element *value)
+void DestroyElement(Element *value)
 {
     if (value != NULL)
     {
@@ -96,10 +96,10 @@ void ElementDestroy(Element *value)
             SeqDestroy(value->list);
             break;
         case TYPE_BODY:
-            BodyDestroy(value->body);
+            DestroyBody(value->body);
             break;
         case TYPE_ATTRIBUTE:
-            AttributeDestroy(value->attribute);
+            DestroyAttribute(value->attribute);
             break;
         default:
             debug_abort_if_reached();
@@ -117,7 +117,7 @@ Body *ElementToBody(Element *element)
     return body;
 }
 
-void ElementAddChild(Element *parent, Element *child)
+void AppendElement(Element *parent, Element *child)
 {
     assert(parent != NULL && child != NULL);
 
@@ -129,10 +129,10 @@ void ElementAddChild(Element *parent, Element *child)
         SeqAppend(parent->list, child);
         break;
     case TYPE_ATTRIBUTE:
-        AttributeSetValue(parent->attribute, child);
+        SetAttributeValue(parent->attribute, child);
         break;
     case TYPE_BODY:
-        BodyAppendAttribute(parent->body, child);
+        AppendBodyAttribute(parent->body, child);
         break;
     case TYPE_UNKNOWN:
     case TYPE_STRING:
@@ -170,7 +170,7 @@ void PrintList(Element *element)
     printf("}");
 }
 
-void BodyPrint(Body *body)
+void PrintBody(Body *body)
 {
     printf("body %s %s\n{\n", body->type, body->name);
     size_t length = SeqLength(body->attributes);

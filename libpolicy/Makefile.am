@@ -17,7 +17,7 @@ AM_YFLAGS = -d -Wall -Werror -Wno-yacc
 libpolicy_la_SOURCES = \
 	cf_tokenizer.l \
 	cf_parser.y cf_parser.h \
-	body.c body.h \
+	policy.c policy.h \
 	parse_lib.c parse_lib.h
 
 # Tell the C preprocessor (CPP) where to find headers:
