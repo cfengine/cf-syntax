@@ -61,22 +61,23 @@ int main(int argc, const char *const *argv)
     }
 
     // Open file if specified:
-    FILE *file_stream = stdin;
+    FILE *input_stream = stdin;
     if (filename != NULL)
     {
-        file_stream = safe_fopen(filename, "r");
+        input_stream = safe_fopen(filename, "r");
     }
+
     int ret = 0;
     // Lex / Parse file:
     if (print_tokens)
     {
         // Only print tokens, don't check syntax:
         // (Uses only the flex generated lexer, not the yacc parser grammar)
-        ret = LexFileStream(file_stream, filename) ? 0 : 1;
+        ret = LexFileStream(input_stream, filename) ? 0 : 1;
     }
     else
     {
-        PolicyFile *policy = ParseFileStream(file_stream, filename);
+        PolicyFile *policy = ParseFileStream(input_stream, filename);
         // Parse file, check syntax according to yacc grammar:
         if (policy != NULL)
         {
@@ -90,6 +91,10 @@ int main(int argc, const char *const *argv)
             ret = 1;
         }
         DestroyPolicyFile(policy);
+    }
+    if (input_stream != stdin)
+    {
+        fclose(input_stream);
     }
     return ret;
 }
