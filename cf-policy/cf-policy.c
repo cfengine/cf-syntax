@@ -1,7 +1,7 @@
 #include <parse_lib.h>
 #include <string_lib.h> // StringMatchesOption()
 #include <file_lib.h>   // safe_fopen()
-#include <policy.h>       // Body
+#include <policy.h>     // Body
 
 static void RenderPolicy(PolicyFile *policy, const char *filename)
 {
@@ -29,9 +29,21 @@ int main(int argc, const char *const *argv)
     // Parse remaining command line args:
     bool print_tokens = false;
     const char *filename = NULL;
+    const char *render_file = NULL;
     while (argc > 0)
     {
-        if (StringMatchesOption(argv[0], "--tokens", "-t"))
+        if (StringMatchesOption(argv[0], "--render", "-r"))
+        {
+            if (argc < 2 || argv[1][0] == '-')
+            {
+                printf("Error: --render requires an output file name!\n");
+                return 1;
+            }
+            argc -= 1;
+            argv += 1;
+            render_file = argv[0];
+        }
+        else if (StringMatchesOption(argv[0], "--tokens", "-t"))
         {
             print_tokens = true;
         }
@@ -70,7 +82,7 @@ int main(int argc, const char *const *argv)
         {
             printf("Syntax check: " GREEN "OK" RST "\n");
 
-            RenderPolicy(policy, filename);
+            RenderPolicy(policy, render_file);
         }
         else
         {
