@@ -82,8 +82,10 @@ int main(int argc, const char *const *argv)
         if (policy != NULL)
         {
             printf("Syntax check: " GREEN "OK" RST "\n");
-
-            RenderPolicy(policy, render_file);
+            if (render_file != NULL)
+            {
+                RenderPolicy(policy, render_file);
+            }
         }
         else
         {
