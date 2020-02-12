@@ -23,13 +23,16 @@ typedef struct Parser {
     size_t errors;
     PolicyFile *policy;
     Stack *stack;
+    FILE *output;
+    size_t output_column;
+    bool insert_empty_line;
 } Parser;
 
-PolicyFile *ParseFileStream(FILE *input_file, const char *name);
+PolicyFile *ParseFileStream(FILE *input_file, const char *name, FILE *output);
 bool LexFileStream(FILE *input_file, const char *name);
 PolicyFile *ParseFile(const char *path);
 
-Parser* NewParser(const char *filename);
+Parser* NewParser(const char *filename, FILE *output);
 void DestroyParser(Parser *p);
 PolicyFile *CloseParser(Parser *p);
 PolicyFile *NewPolicyFile(const char *filename);

@@ -48,5 +48,6 @@ Element *NewElementAttribute(const char *name);
 void DestroyElement(Element *element);
 Body *ElementToBody(Element *element);
 void AppendElement(Element *parent, Element *child);
+ssize_t ChildrenLength(Element *parent);
 
 #endif

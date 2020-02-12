@@ -141,6 +141,20 @@ void AppendElement(Element *parent, Element *child)
     }
 }
 
+ssize_t ChildrenLength(Element *parent)
+{
+    assert(parent != NULL);
+
+    const Type t = parent->type;
+
+    if (t != TYPE_LIST)
+    {
+        return -1;
+    }
+
+    return SeqLength(parent->list);
+}
+
 void PrintList(Element *element)
 {
     assert(element != NULL);
