@@ -8,6 +8,8 @@ AM_LDFLAGS  = $(CORE_LDFLAGS)  $(PCRE_LDFLAGS)  $(OPENSSL_LDFLAGS)
 libpolicy_la_LIBADD = ../libntech/libutils/libutils.la
 libpolicy_la_LIBS   = $(PCRE_LIBS) $(OPENSSL_LIBS)
 
+BUILT_SOURCES = cf_parser.h
+
 # -d:        Generate header (cf_parser.h) to include from cf_tokenizer.l
 # -Wall:     Enable all yacc warnings
 # -Werror:   Treat yacc warnings as errors
