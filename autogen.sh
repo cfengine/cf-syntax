@@ -1,6 +1,3 @@
-(cd libntech && git clean -fXd)
-(cd tests/unit/cmocka && git clean -fXd)
-
 # Check for libntech submodule and give nice advice on how to fix:
 if [ ! -f libntech/libutils/sequence.h ] ; then
     echo "Error: libntech/libutils/sequence.h is missing"
@@ -10,5 +7,10 @@ if [ ! -f libntech/libutils/sequence.h ] ; then
     exit 1
 fi
 
+(cd tests/unit/cmocka && git clean -fXd)
+(cd libntech && git clean -fXd)
+(cd libntech && ./autogen.sh)
+
 autoreconf -i ./
+
 ./configure $@

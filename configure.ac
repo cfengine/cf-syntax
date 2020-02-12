@@ -1,9 +1,12 @@
+# Required autoconf version:
+AC_PREREQ([2.68])
+
 # package name, version, bug report email, tarball name, project home page:
 AC_INIT([cf-syntax], [0.0.1], [ole@northern.tech],
         [cf-syntax], [https://northern.tech/])
 
-# Required autoconf version:
-AC_PREREQ([2.68])
+# Use the m4 directory for m4 macros (convention):
+AC_CONFIG_MACRO_DIR([m4])
 
 # Defines variables like target_os:
 AC_CANONICAL_TARGET
@@ -37,9 +40,6 @@ AC_PROG_CC
 AM_PROG_LEX
 AC_PROG_YACC
 
-# Use the m4 directory for m4 macros (convention):
-AC_CONFIG_MACRO_DIR([m4])
-
 # cmocka is a cmake project, but we don't have to run cmake, we can just
 # make sure our config.h file has the neccessary HAVE_MALLOC_H etc.:
 AC_CHECK_HEADERS([malloc.h inttypes.h signal.h strings.h])
@@ -69,11 +69,8 @@ esac
 
 AC_SUBST([STRIP_LDFLAGS]) # Substitutes the variable in Makefile.am
 
-# TODO - get rid of this:
-# Expose PCRE_LDFLAGS and friends:
-AC_CHECK_LIB(pcre, pcre_exec, [], [AC_MSG_ERROR(Cannot find PCRE)])
-
 # Run autoconf/configure in libntech, generating necessary makefiles:
-AC_CONFIG_SUBDIRS([libntech])
+# AC_CONFIG_SUBDIRS([libntech])
+AX_SUBDIRS_CONFIGURE([libntech], [], [--with-pcre=no], [], [])
 
 AC_OUTPUT
